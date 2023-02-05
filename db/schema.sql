@@ -74,6 +74,18 @@ CREATE TABLE public.schema_migrations (
 
 
 --
+-- Name: tokens; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.tokens (
+    hash bytea NOT NULL,
+    user_id bigint NOT NULL,
+    expiry timestamp(0) with time zone NOT NULL,
+    scope text NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -138,6 +150,14 @@ ALTER TABLE ONLY public.schema_migrations
 
 
 --
+-- Name: tokens tokens_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tokens
+    ADD CONSTRAINT tokens_pkey PRIMARY KEY (hash);
+
+
+--
 -- Name: users users_email_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -168,6 +188,14 @@ CREATE INDEX movies_title_idx ON public.movies USING gin (to_tsvector('simple'::
 
 
 --
+-- Name: tokens tokens_user_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.tokens
+    ADD CONSTRAINT tokens_user_id_fkey FOREIGN KEY (user_id) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- PostgreSQL database dump complete
 --
 
@@ -180,4 +208,5 @@ INSERT INTO public.schema_migrations (version) VALUES
     ('20230203185409'),
     ('20230203185532'),
     ('20230204162528'),
-    ('20230205090757');
+    ('20230205090757'),
+    ('20230205125056');
